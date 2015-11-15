@@ -1,0 +1,35 @@
+package com.sandbox.common.models.jms;
+
+import com.sandbox.common.enums.RuntimeTransportType;
+import com.sandbox.common.models.RuntimeResponse;
+import com.sandbox.common.models.ServiceScriptException;
+
+import java.util.Map;
+
+/**
+ * Created by drew on 6/08/2014.
+ */
+public class JMSRuntimeResponse extends RuntimeResponse {
+
+    public JMSRuntimeResponse() {
+    }
+
+    public JMSRuntimeResponse(String body, Map<String, String> responseHeaders, String responseDestination) throws Exception {
+        this.body = body;
+        this.headers = responseHeaders;
+        this.error = null;
+        if(responseDestination != null) responseHeaders.put("JMSDestination", responseDestination);
+        //if still not set, throw exception
+        if(!responseHeaders.containsKey("JMSDestination")) throw new ServiceScriptException("No response queue has been set, either via JMSReplyTo or via send().");
+    }
+
+    public JMSRuntimeResponse(com.sandbox.common.models.Error error) {
+        this.error = error;
+
+    }
+
+    @Override
+    public String getTransport() {
+        return RuntimeTransportType.JMS.toString();
+    }
+}
