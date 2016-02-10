@@ -15,14 +15,18 @@ public class HttpRuntimeResponse extends RuntimeResponse {
     @JsonProperty(value = "status")
     private int statusCode;
 
+    @JsonProperty(value = "statusText")
+    private String statusText;
+
     private List<String[]> cookies;
 
     public HttpRuntimeResponse() {
     }
 
-    public HttpRuntimeResponse(String body, int statusCode, Map<String, String> headers, List<String[]> cookies) {
+    public HttpRuntimeResponse(String body, int statusCode, String statusText, Map<String, String> headers, List<String[]> cookies) {
         this.body = body;
         this.statusCode = statusCode;
+        this.statusText = statusText;
         this.headers = headers;
         this.cookies = cookies;
         this.error = null;
@@ -36,6 +40,10 @@ public class HttpRuntimeResponse extends RuntimeResponse {
 
     public int getStatusCode() {
         return statusCode;
+    }
+
+    public String getStatusText() {
+        return statusText;
     }
 
     public List<String[]> getCookies() {
