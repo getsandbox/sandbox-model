@@ -1,6 +1,6 @@
 package com.sandbox.common.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,18 +9,26 @@ import java.util.Map;
  * Created by nickhoughton on 20/10/2014.
  */
 public abstract class RuntimeRequest {
+    @ApiModelProperty(value = "Which transport the request was for, 'HTTP' or 'JMS'.")
     String transport;
+    @ApiModelProperty(value = "The ID of the Sandbox that received the request.")
     String sandboxId;
+    @ApiModelProperty(value = "The name of the Sandbox that received the request.")
     String sandboxName;
+    @ApiModelProperty(value = "The parent name of the Sandbox that received the request.")
     String fullSandboxName;
+    @ApiModelProperty(value = "The parent ID of the Sandbox that received the request.")
     String fullSandboxId;
+    @ApiModelProperty(value = "Transport headers for the given request.")
     Map<String, String> headers;
     Map<String, String> properties = new HashMap<>();
+    @ApiModelProperty(value = "The body of the given request.")
     String body;
-    @JsonProperty(value = "content_type")
+    @ApiModelProperty(value = "The content type of the body, for example 'application/json'.")
     String contentType;
+    @ApiModelProperty(value = "The requestor IP address.")
     String ip;
-    @JsonProperty(value = "received_timestamp")
+    @ApiModelProperty(value = "The epoch time in milliseconds when the request was received.")
     long receivedTimestamp = System.currentTimeMillis();
 
     public abstract String getTransport();

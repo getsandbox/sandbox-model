@@ -1,6 +1,6 @@
 package com.sandbox.common.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Map;
 
@@ -8,13 +8,17 @@ import java.util.Map;
  * Created by nickhoughton on 20/10/2014.
  */
 public abstract class RuntimeResponse {
+    @ApiModelProperty(value = "Which transport the request was for, 'HTTP' or 'JMS'.")
     protected String transport;
+    @ApiModelProperty(value = "The body of the given response.")
     protected String body;
+    @ApiModelProperty(value = "Transport headers for the given response.")
     protected Map<String, String> headers;
+    @ApiModelProperty(value = "Error if there is a problem during Sandbox execution.")
     protected Error error;
-    @JsonProperty(value = "responded_timestamp")
+    @ApiModelProperty(value = "The epoch time in milliseconds when the response was sent.")
     private long respondedTimestamp = System.currentTimeMillis();
-    @JsonProperty(value = "duration_ms")
+    @ApiModelProperty(value = "Duration in milliseconds of the processing time in Sandbox.")
     private long durationMillis;
 
     public abstract String getTransport();

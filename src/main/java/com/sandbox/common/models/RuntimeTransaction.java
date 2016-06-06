@@ -1,23 +1,26 @@
 package com.sandbox.common.models;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by nickhoughton on 9/08/2014.
  */
-public class InstanceTransaction {
+public class RuntimeTransaction {
 
+    @ApiModelProperty(value = "The source sandbox name.")
     String sandboxName;
 
     RuntimeRequest request;
     List<RuntimeResponse> responses;
 
-    public InstanceTransaction(RuntimeRequest request, RuntimeResponse... responses) {
+    public RuntimeTransaction(RuntimeRequest request, RuntimeResponse... responses) {
         this(request, Arrays.asList(responses));
     }
 
-    public InstanceTransaction(RuntimeRequest request, List<RuntimeResponse> responses) {
+    public RuntimeTransaction(RuntimeRequest request, List<RuntimeResponse> responses) {
         sandboxName = request.getSandboxName();
         this.request = request;
         this.responses = responses;
@@ -28,6 +31,10 @@ public class InstanceTransaction {
                 response.setDurationMillis(response.getRespondedTimestamp() - request.getReceivedTimestamp());
             }
         }
+    }
+
+    public String getSandboxName() {
+        return sandboxName;
     }
 
     public RuntimeRequest getRequest() {

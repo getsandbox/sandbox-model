@@ -3,6 +3,7 @@ package com.sandbox.common.models;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
 
 /**
  * Used as a standard way to represent an error payload.
@@ -10,8 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonInclude(Include.NON_NULL)
 public class Error {
     private String code;
+
+    @ApiModelProperty(value = "Short message describing the error.")
     private String displayMessage;
+
+    @ApiModelProperty(value = "Longer message describing the error.")
     private String detailedMessage;
+
+    @ApiModelProperty(value = "Message describing which field the error relates to.")
     private String field;
 
     public Error() {
@@ -43,12 +50,12 @@ public class Error {
         this.code = code;
     }
 
-    @JsonProperty("detailed_message")
+    @JsonProperty("detailedMessage")
     public String getDetailedMessage() {
         return detailedMessage;
     }
 
-    @JsonProperty("detailed_message")
+    @JsonProperty("detailedMessage")
     public void setDetailedMessage(String detailedMessage) {
         this.detailedMessage = detailedMessage;
     }

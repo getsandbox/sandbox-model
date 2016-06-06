@@ -1,6 +1,5 @@
 package com.sandbox.common.models.http;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sandbox.common.enums.RuntimeTransportType;
 import com.sandbox.common.models.RuntimeResponse;
 
@@ -12,10 +11,8 @@ import java.util.Map;
  */
 public class HttpRuntimeResponse extends RuntimeResponse {
 
-    @JsonProperty(value = "status")
     private int statusCode;
 
-    @JsonProperty(value = "statusText")
     private String statusText;
 
     private List<String[]> cookies;
