@@ -82,7 +82,7 @@ public class ActivityMessage {
     }
 
     public String getMessage() {
-        return "log".equals(messageType) ? message : null;
+        return messageType==ActivityMessageTypeEnum.log ? message : null;
     }
 
     public void setMessage(String message) {
