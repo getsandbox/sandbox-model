@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonRawValue;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.Column;
@@ -49,7 +49,7 @@ public class ActivityMessage {
 
     }
 
-    public ActivityMessage(RuntimeTransaction txn, ObjectMapper mapper, String sandboxId) {
+    public ActivityMessage(RuntimeTransaction txn, ObjectWriter mapper, String sandboxId) {
         this.messageType = ActivityMessageTypeEnum.request;
         this.sandboxId = sandboxId;
         try {
