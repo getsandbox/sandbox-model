@@ -1,0 +1,53 @@
+package com.sandbox.runtime.utils;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+public class MapUtils {
+
+    public Map<String, String> flattenMultiValue(Map<String, ?> multiMap, String... keysToIgnore) {
+        if(multiMap == null) return null;
+
+        Map<String,String> results = new HashMap<String, String>();
+        List keysToIgnoreList = Arrays.asList(keysToIgnore);
+
+        Set<String> keys = multiMap.keySet();
+        for (String key : keys){
+            //skip the final match rubbish, dont want it.
+            if(keysToIgnoreList.contains(key)) continue;
+
+            Object keyValue = multiMap.get(key);
+            if(keyValue.getClass().isArray() || keyValue instanceof List){
+                //turn array values into a list from whatever it is in atm
+                List valuesList = null;
+                if(!(keyValue instanceof List)){
+                    valuesList = Arrays.asList((Object[])keyValue);
+                }else{
+                    valuesList = (List)keyValue;
+                }
+
+                for (Object value : valuesList){
+                    if(value instanceof String){
+                        results.put(key, (String) value);
+                    }else{
+                        results.put(key, value.toString());
+                    }
+                }
+
+            }else{
+                if(keyValue instanceof String){
+                    results.put(key, (String) keyValue);
+                }else{
+                    results.put(key, keyValue.toString());
+                }
+            }
+        }
+
+        return results;
+
+    }
+
+}

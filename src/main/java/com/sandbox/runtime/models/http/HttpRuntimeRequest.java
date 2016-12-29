@@ -1,7 +1,7 @@
-package com.sandbox.common.models.http;
+package com.sandbox.runtime.models.http;
 
-import com.sandbox.common.models.RuntimeRequest;
-import com.sandbox.common.enums.RuntimeTransportType;
+import com.sandbox.runtime.models.RuntimeRequest;
+import com.sandbox.runtime.models.RuntimeTransportType;
 
 import java.util.List;
 import java.util.Map;

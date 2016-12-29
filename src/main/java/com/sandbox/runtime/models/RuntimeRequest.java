@@ -1,4 +1,4 @@
-package com.sandbox.common.models;
+package com.sandbox.runtime.models;
 
 import io.swagger.annotations.ApiModelProperty;
 

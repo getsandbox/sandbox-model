@@ -1,7 +1,7 @@
-package com.sandbox.common.models.http;
+package com.sandbox.runtime.models.http;
 
-import com.sandbox.common.enums.RuntimeTransportType;
-import com.sandbox.common.models.RuntimeResponse;
+import com.sandbox.runtime.models.RuntimeTransportType;
+import com.sandbox.runtime.models.RuntimeResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -29,7 +29,7 @@ public class HttpRuntimeResponse extends RuntimeResponse {
         this.error = null;
     }
 
-    public HttpRuntimeResponse(com.sandbox.common.models.Error error) {
+    public HttpRuntimeResponse(com.sandbox.runtime.models.Error error) {
         this.error = error;
         this.statusCode = 500;
 

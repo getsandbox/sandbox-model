@@ -1,4 +1,4 @@
-package com.sandbox.common.models;
+package com.sandbox.runtime.models;
 
 /**
  * Created by drew on 7/08/2014.

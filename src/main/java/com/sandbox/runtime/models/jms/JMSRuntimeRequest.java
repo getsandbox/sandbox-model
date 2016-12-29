@@ -1,7 +1,7 @@
-package com.sandbox.common.models.jms;
+package com.sandbox.runtime.models.jms;
 
-import com.sandbox.common.models.RuntimeRequest;
-import com.sandbox.common.enums.RuntimeTransportType;
+import com.sandbox.runtime.models.RuntimeRequest;
+import com.sandbox.runtime.models.RuntimeTransportType;
 
 /**
  * Created by nickhoughton on 1/08/2014.

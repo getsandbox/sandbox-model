@@ -1,8 +1,8 @@
-package com.sandbox.common.models.jms;
+package com.sandbox.runtime.models.jms;
 
-import com.sandbox.common.enums.RuntimeTransportType;
-import com.sandbox.common.models.RuntimeResponse;
-import com.sandbox.common.models.ServiceScriptException;
+import com.sandbox.runtime.models.RuntimeTransportType;
+import com.sandbox.runtime.models.RuntimeResponse;
+import com.sandbox.runtime.models.ServiceScriptException;
 
 import java.util.Map;
 
@@ -23,7 +23,7 @@ public class JMSRuntimeResponse extends RuntimeResponse {
         if(!responseHeaders.containsKey("JMSDestination")) throw new ServiceScriptException("No response queue has been set, either via JMSReplyTo or via send().");
     }
 
-    public JMSRuntimeResponse(com.sandbox.common.models.Error error) {
+    public JMSRuntimeResponse(com.sandbox.runtime.models.Error error) {
         this.error = error;
 
     }
