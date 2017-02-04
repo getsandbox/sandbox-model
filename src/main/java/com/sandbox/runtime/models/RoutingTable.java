@@ -2,7 +2,7 @@ package com.sandbox.runtime.models;
 
 import com.sandbox.runtime.models.http.HttpRuntimeRequest;
 import com.sandbox.runtime.models.jms.JMSRuntimeRequest;
-import com.sandbox.runtime.models.http.HTTPRouteDetails;
+import com.sandbox.runtime.models.http.HTTPRoute;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class RoutingTable implements Serializable{
 
     private static final long serialVersionUID = 5416349625258357175L;
     String repositoryId;
-    List<RouteDetails> routeDetails;
+    List<Route> routeDetails;
     private boolean routesSorted = false;
 
     public String getRepositoryId() {
@@ -27,28 +27,28 @@ public class RoutingTable implements Serializable{
         this.repositoryId = repositoryId;
     }
 
-    public List<RouteDetails> getRouteDetails() {
+    public List<Route> getRouteDetails() {
         return routeDetails;
     }
 
-    public void setRouteDetails(List<RouteDetails> routeDetails) {
+    public void setRouteDetails(List<Route> routeDetails) {
         this.routeDetails = routeDetails;
     }
 
-    public void addRouteDetails(RouteDetails routeDetails){
+    public void addRouteDetails(Route routeDetails){
         if(getRouteDetails() == null){
-            setRouteDetails(new ArrayList<RouteDetails>());
+            setRouteDetails(new ArrayList<Route>());
         }
 
         getRouteDetails().add(routeDetails);
 
     }
 
-    public HTTPRouteDetails findMatch(String requestMethod, String requestPath, Map<String, String> properties) {
-        return (HTTPRouteDetails) findMatch("HTTP", requestMethod, requestPath, properties);
+    public HTTPRoute findMatch(String requestMethod, String requestPath, Map<String, String> properties) {
+        return (HTTPRoute) findMatch("HTTP", requestMethod, requestPath, properties);
     }
 
-    public RouteDetails findMatch(String requestTransport, String requestMethod, String requestPath, Map<String, String> properties) {
+    public Route findMatch(String requestTransport, String requestMethod, String requestPath, Map<String, String> properties) {
         if("HTTP".equalsIgnoreCase(requestTransport)) {
             HttpRuntimeRequest request = new HttpRuntimeRequest();
             request.setMethod(requestMethod);
@@ -65,8 +65,8 @@ public class RoutingTable implements Serializable{
         }
     }
 
-    public RouteDetails findMatch(RuntimeRequest runtimeRequest){
-        List<RouteDetails> routes = getRouteDetails();
+    public Route findMatch(RuntimeRequest runtimeRequest){
+        List<Route> routes = getRouteDetails();
 
         //sort, put the longest route literals at the top, should theoretically be the best matches?!
         if(!routesSorted){
@@ -78,8 +78,8 @@ public class RoutingTable implements Serializable{
 
         if(routes == null) return null;
 
-        for(RouteDetails route : routes){
-            boolean isMatch = route.matchesRuntimeRequest(runtimeRequest);
+        for(Route route : routes){
+            boolean isMatch = route.isMatch(runtimeRequest);
             if(isMatch) return route;
         }
 

@@ -1,5 +1,6 @@
 package com.sandbox.runtime.utils;
 
+import java.net.URLDecoder;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -31,23 +32,31 @@ public class MapUtils {
 
                 for (Object value : valuesList){
                     if(value instanceof String){
-                        results.put(key, (String) value);
+                        results.put(key, decodedURIValues((String) value));
                     }else{
-                        results.put(key, value.toString());
+                        results.put(key, decodedURIValues(value.toString()));
                     }
                 }
 
             }else{
                 if(keyValue instanceof String){
-                    results.put(key, (String) keyValue);
+                    results.put(key, decodedURIValues((String) keyValue));
                 }else{
-                    results.put(key, keyValue.toString());
+                    results.put(key, decodedURIValues(keyValue.toString()));
                 }
             }
         }
 
         return results;
 
+    }
+
+    private String decodedURIValues(String value){
+        try {
+            return (value == null || value.isEmpty()) ? value : URLDecoder.decode(value, "UTF-8");
+        } catch (Exception e) {
+            return value;
+        }
     }
 
 }

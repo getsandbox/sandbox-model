@@ -1,5 +1,6 @@
 package com.sandbox.runtime.models;
 
+import com.sandbox.runtime.models.config.RouteConfig;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
@@ -9,7 +10,7 @@ import java.util.Map;
 /**
  * Created by nickhoughton on 3/08/2014.
  */
-public abstract class RouteDetails implements Serializable{
+public abstract class Route implements Serializable{
 
     private static final long serialVersionUID = 7262164955602223539L;
 
@@ -24,7 +25,9 @@ public abstract class RouteDetails implements Serializable{
     @ApiModelProperty(hidden = true)
     ScriptSource functionSource;
 
-    public RouteDetails() {
+    RouteConfig routeConfig;
+
+    public Route() {
 
     }
 
@@ -83,14 +86,22 @@ public abstract class RouteDetails implements Serializable{
         return match;
     }
 
+    public RouteConfig getRouteConfig() {
+        return routeConfig;
+    }
+
+    public void setRouteConfig(RouteConfig routeConfig) {
+        this.routeConfig = routeConfig;
+    }
+
     public abstract String getProcessingKey();
 
     public abstract String getDisplayKey();
 
-    public abstract boolean matchesRoute(RouteDetails otherRoute);
+    public abstract boolean isMatch(Route otherRoute);
 
-    public abstract boolean matchesRuntimeRequest(RuntimeRequest runtimeRequest);
+    public abstract boolean isMatch(RuntimeRequest runtimeRequest);
 
-    public abstract boolean matchesEngineRequest(EngineRequest req);
+    public abstract boolean isUncompiledMatch(EngineRequest req);
 
 }

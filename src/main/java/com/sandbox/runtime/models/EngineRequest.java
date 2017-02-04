@@ -63,7 +63,7 @@ public abstract class EngineRequest {
                     parsedBody = body;
                 }
             } catch(Exception e) {
-                throw new ServiceScriptException("Can't parse body of type " + this.contentType);
+                throw new ServiceScriptException("Can't parse body of type " + this.contentType, e);
             }
         }
 

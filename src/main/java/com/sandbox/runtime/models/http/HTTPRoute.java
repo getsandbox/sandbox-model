@@ -3,7 +3,7 @@ package com.sandbox.runtime.models.http;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sandbox.runtime.models.RuntimeRequest;
 import com.sandbox.runtime.models.EngineRequest;
-import com.sandbox.runtime.models.RouteDetails;
+import com.sandbox.runtime.models.Route;
 import org.apache.cxf.jaxrs.model.ExactMatchURITemplate;
 
 import javax.ws.rs.core.MultivaluedHashMap;
@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 /**
  * Created by nickhoughton on 3/08/2014.
  */
-public class HTTPRouteDetails extends RouteDetails {
+public class HTTPRoute extends Route {
 
     String method;
     String path;
@@ -27,11 +27,11 @@ public class HTTPRouteDetails extends RouteDetails {
     @JsonIgnore
     MultivaluedMap<String, String> pathParams;
 
-    public HTTPRouteDetails() {
+    public HTTPRoute() {
         super();
     }
 
-    public HTTPRouteDetails(String method, String path, Map<String, String> properties) {
+    public HTTPRoute(String method, String path, Map<String, String> properties) {
         super();
 
         if(path.equals("*") || path.equals("/*")){
@@ -101,15 +101,19 @@ public class HTTPRouteDetails extends RouteDetails {
     }
 
     public boolean matchesMethod(String method){
-        if(method == null || this.method == null) return false;
+        if(method == null || getMethod() == null) return false;
 
         //check both sides of the comparison for wildcard methods
-        if(isWildcardMethod(this.method) || isWildcardMethod(method)) {
+        if(isWildcardMethod(getMethod()) || isWildcardMethod(method)) {
 
             return true;
         }else{
-            return this.method.equalsIgnoreCase(method);
+            return getMethod().equalsIgnoreCase(method);
         }
+    }
+
+    public boolean matchesExactPath(String path) {
+        return getPath().equals(path);
     }
 
     //match explicit properties
@@ -139,7 +143,7 @@ public class HTTPRouteDetails extends RouteDetails {
     }
 
     @Override
-    public boolean matchesRuntimeRequest(RuntimeRequest runtimeRequest) {
+    public boolean isMatch(RuntimeRequest runtimeRequest) {
         pathParams = new MultivaluedHashMap<>();
 
         if(runtimeRequest instanceof HttpRuntimeRequest){
@@ -151,18 +155,14 @@ public class HTTPRouteDetails extends RouteDetails {
         }
     }
 
-    public boolean matchesRoute(RouteDetails otherRoute) {
-        if(otherRoute instanceof HTTPRouteDetails){
-            HTTPRouteDetails otherHttpRoute = (HTTPRouteDetails) otherRoute;
+    public boolean isMatch(Route otherRoute) {
+        if(otherRoute instanceof HTTPRoute){
+            HTTPRoute otherHttpRoute = (HTTPRoute) otherRoute;
             return isMatch(otherHttpRoute.getMethod(), otherHttpRoute.getPath(), otherRoute.getProperties());
         }else{
             return false;
         }
     }
-
-//    public boolean isMatch(RouteDetails otherRoute) {
-//        return isMatch(otherRoute.getMethod(), otherRoute.getPath(), otherRoute.getProperties());
-//    }
 
     public boolean isMatch(String method, String url, Map<String, String> properties) {
         //bit crap but match needs a map to store processed path params.
@@ -180,7 +180,7 @@ public class HTTPRouteDetails extends RouteDetails {
         if(!matchesProperties(properties)) return false;
 
         //if paths are exactly the same then match
-        if (getPath().equals(url)) return true;
+        if (matchesExactPath(url)) return true;
 
         //method matches, so continue..
         ExactMatchURITemplate template = process();
@@ -195,13 +195,17 @@ public class HTTPRouteDetails extends RouteDetails {
 
 
     //matches based on uncompiled path /blah/{smth}
-    public boolean matchesEngineRequest(EngineRequest req){
+    public boolean isUncompiledMatch(EngineRequest req){
         if(req instanceof HTTPRequest){
             HTTPRequest httpReq = (HTTPRequest) req;
             return matchesMethod(httpReq.method()) && httpReq.path().equalsIgnoreCase(path) && matchesProperties(req.getProperties());
         }else{
             return false;
         }
+    }
+
+    public boolean isUncompiledMatch(String method, String path, Map<String, String> properties){
+        return matchesMethod(method) && matchesExactPath(path) && matchesProperties(properties);
     }
 
 }

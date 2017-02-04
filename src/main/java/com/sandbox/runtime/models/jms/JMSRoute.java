@@ -3,19 +3,19 @@ package com.sandbox.runtime.models.jms;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sandbox.runtime.models.RuntimeRequest;
 import com.sandbox.runtime.models.EngineRequest;
-import com.sandbox.runtime.models.RouteDetails;
+import com.sandbox.runtime.models.Route;
 
 import java.util.Map;
 
 /**
  * Created by nickhoughton on 3/08/2014.
  */
-public class JMSRouteDetails extends RouteDetails {
+public class JMSRoute extends Route {
 
-    public JMSRouteDetails() {
+    public JMSRoute() {
     }
 
-    public JMSRouteDetails(String destination, Map<String, String> properties) {
+    public JMSRoute(String destination, Map<String, String> properties) {
         this.destination = destination;
         setProperties(properties);
     }
@@ -43,17 +43,17 @@ public class JMSRouteDetails extends RouteDetails {
     }
 
     @Override
-    public boolean matchesRoute(RouteDetails otherRoute) {
-        return otherRoute instanceof JMSRouteDetails && getDestination().equals(((JMSRouteDetails) otherRoute).getDestination());
+    public boolean isMatch(Route otherRoute) {
+        return otherRoute instanceof JMSRoute && getDestination().equals(((JMSRoute) otherRoute).getDestination());
     }
 
     @Override
-    public boolean matchesRuntimeRequest(RuntimeRequest runtimeRequest) {
+    public boolean isMatch(RuntimeRequest runtimeRequest) {
         return runtimeRequest instanceof JMSRuntimeRequest && getDestination().equals(((JMSRuntimeRequest) runtimeRequest).getDestination());
     }
 
     //matches based on uncompiled path /blah/{smth}
-    public boolean matchesEngineRequest(EngineRequest req){
+    public boolean isUncompiledMatch(EngineRequest req){
         return req instanceof JMSRequest && getDestination().equals(((JMSRequest)req).destination());
     }
 }

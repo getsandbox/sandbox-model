@@ -20,12 +20,14 @@ public class HttpRuntimeRequest extends RuntimeRequest {
 
     List<String> accepted;
 
+    //the actual url being requested by the client '/blah/something'
     String url;
 
     Map<String, String> params;
 
     String method;
 
+    //the potentially templated/uncompiled path defined in the route, '/blah/something' or '/blah/{item}'
     String path;
 
     public Map<String, String> getCookies() {

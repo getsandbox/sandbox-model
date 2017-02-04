@@ -22,12 +22,14 @@ import java.util.Map;
  */
 public class HTTPRequest extends EngineRequest {
 
+    //the actual url being requested by the client '/blah/something'
     final String path;
     final String method;
     final ScriptObject query;
     final ScriptObject params;
     final ScriptObject cookies;
     final List<String> accepted;
+    //the potentially templated/uncompiled path defined in the route, '/blah/something' or '/blah/{item}'
     final String url;
 
     private static MimetypesFileTypeMap mimeTypes = new MimetypesFileTypeMap();
