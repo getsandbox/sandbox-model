@@ -69,11 +69,13 @@ public class RoutingTable implements Serializable{
         List<Route> routes = getRouteDetails();
 
         //sort, put the longest route literals at the top, should theoretically be the best matches?!
-        if(!routesSorted){
-            routes.sort((r1, r2) -> {
-                return r2.getProcessingKey().compareTo(r1.getProcessingKey());
-            });
-            routesSorted = true;
+        synchronized (this){
+            if(!routesSorted){
+                routes.sort((r1, r2) -> {
+                    return r2.getProcessingKey().compareTo(r1.getProcessingKey());
+                });
+                routesSorted = true;
+            }
         }
 
         if(routes == null) return null;
