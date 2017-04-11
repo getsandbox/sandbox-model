@@ -21,6 +21,8 @@ public abstract class RuntimeResponse {
     private long respondedTimestamp = System.currentTimeMillis();
     @ApiModelProperty(value = "Duration in milliseconds of the processing time in Sandbox.")
     private long durationMillis;
+    @ApiModelProperty(value = "Duration in milliseconds of the response delay.")
+    private int responseDelay = 0;
 
     public abstract String getTransport();
 
@@ -58,5 +60,13 @@ public abstract class RuntimeResponse {
 
     public void setDurationMillis(Long durationMillis) {
         this.durationMillis = durationMillis;
+    }
+
+    public int getResponseDelay() {
+        return responseDelay;
+    }
+
+    public void setResponseDelay(int responseDelay) {
+        this.responseDelay = responseDelay;
     }
 }

@@ -2,8 +2,6 @@ package com.sandbox.runtime.models;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import jdk.nashorn.internal.runtime.ScriptObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.activation.MimetypesFileTypeMap;
 import java.util.ArrayList;
@@ -13,6 +11,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by drew on 30/07/2014.
@@ -93,6 +93,10 @@ public abstract class EngineResponse {
 
     public String get(String header) {
         return getActiveMessage().getHeaders().get(header);
+    }
+
+    public void delay(int delay){
+        this.getActiveMessage().setResponseDelay(delay);
     }
 
     // utilities for service

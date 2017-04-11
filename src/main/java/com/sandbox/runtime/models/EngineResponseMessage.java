@@ -18,6 +18,8 @@ public class EngineResponseMessage {
     //used for JMS, ignored for HTTP
     private String responseDestination;
 
+    private int responseDelay = 0;
+
     public Object getBody() {
         return body;
     }
@@ -64,5 +66,13 @@ public class EngineResponseMessage {
 
     public void setResponseDestination(String responseDestination) {
         this.responseDestination = responseDestination;
+    }
+
+    public int getResponseDelay() {
+        return responseDelay;
+    }
+
+    public void setResponseDelay(int responseDelay) {
+        this.responseDelay = responseDelay;
     }
 }

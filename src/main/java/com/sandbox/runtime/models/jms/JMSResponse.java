@@ -100,12 +100,14 @@ public class JMSResponse extends EngineResponse {
             contentType = mimeTypes.getContentType(type);
         }
         // set Content-Type header
-        header("contenType", contentType);
+        header("contentType", contentType);
     }
 
     @Override
     public RuntimeResponse _getRuntimeResponse(EngineRequest req, EngineResponseMessage message, String body) throws Exception {
-        return new JMSRuntimeResponse(body, message.getHeaders(), message.getResponseDestination());
+        JMSRuntimeResponse response = new JMSRuntimeResponse(body, message.getHeaders(), message.getResponseDestination());
+        response.setResponseDelay(message.getResponseDelay());
+        return response;
     }
 
 }

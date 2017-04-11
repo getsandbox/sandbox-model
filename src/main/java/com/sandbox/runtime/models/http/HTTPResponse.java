@@ -150,6 +150,8 @@ public class HTTPResponse extends EngineResponse {
             status(200);
         }
 
-        return new HttpRuntimeResponse(body, getStatusCode(), getStatusText(), getHeaders(), getCookies());
+        HttpRuntimeResponse response = new HttpRuntimeResponse(body, getStatusCode(), getStatusText(), getHeaders(), getCookies());
+        response.setResponseDelay(message.getResponseDelay());
+        return response;
     }
 }
