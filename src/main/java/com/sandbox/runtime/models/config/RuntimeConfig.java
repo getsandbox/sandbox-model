@@ -13,6 +13,8 @@ public class RuntimeConfig {
     Path basePath = Paths.get("./");
     int httpPort = 8080;
     Integer debugPort = 5005;
+    Integer metadataPort = 8081;
+    int activityDepth = 50;
     Path statePath;
     RuntimeVersion runtimeVersion = RuntimeVersion.getLatest();
     boolean verboseLogging = false;
@@ -72,6 +74,22 @@ public class RuntimeConfig {
 
     public void setDebugPort(Integer debugPort) {
         this.debugPort = debugPort;
+    }
+
+    public Integer getMetadataPort() {
+        return metadataPort;
+    }
+
+    public void setMetadataPort(Integer metadataPort) {
+        this.metadataPort = metadataPort;
+    }
+
+    public int getActivityDepth() {
+        return activityDepth;
+    }
+
+    public void setActivityDepth(int activityDepth) {
+        this.activityDepth = activityDepth;
     }
 
     public Path getStatePath() {

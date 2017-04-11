@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.annotation.JsonRawValue;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.Column;
@@ -14,7 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
 
 /**
  * Created by nickhoughton on 14/09/2014.
@@ -31,7 +28,7 @@ public class ActivityMessage {
 
     @ApiModelProperty(value = "Epoch time in milliseconds when the message was created")
     @Column(name = "CREATED_DATE_TIME", nullable = false)
-    long createdTimestamp;
+    long createdTimestamp = System.currentTimeMillis();
 
     @ApiModelProperty(value = "The details of the message when type is 'log'")
     @Column(name = "message", nullable = false)
@@ -49,20 +46,10 @@ public class ActivityMessage {
 
     }
 
-    public ActivityMessage(RuntimeTransaction txn, ObjectWriter mapper, String sandboxId) {
-        this.messageType = ActivityMessageTypeEnum.request;
+    public ActivityMessage(String sandboxId, ActivityMessageTypeEnum type, String message) {
         this.sandboxId = sandboxId;
-        try {
-            this.message = mapper.writeValueAsString(txn);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public ActivityMessage(String message, String sandboxId) {
+        this.messageType = type;
         this.message = message;
-        this.messageType = ActivityMessageTypeEnum.log;
-        this.sandboxId = sandboxId;
     }
 
     public String getId() {
@@ -116,11 +103,6 @@ public class ActivityMessage {
     @ApiModelProperty(hidden = false, name = "messageObject", value = "The details of the message when type is 'request'")
     public RuntimeTransaction getInstanceTransaction() {
         return null;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdTimestamp = System.currentTimeMillis();
     }
 
 }
