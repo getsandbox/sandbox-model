@@ -6,8 +6,6 @@ import jdk.nashorn.internal.runtime.Context;
 import jdk.nashorn.internal.runtime.Property;
 import jdk.nashorn.internal.runtime.ScriptObject;
 import jdk.nashorn.internal.runtime.arrays.ArrayData;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
@@ -18,24 +16,24 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * Created by nickhoughton on 8/08/2014.
  * Terrible hacks live here, need to fix. TODO
  */
 public class NashornConverter {
 
-    static NashornConverter converter = null;
-    static Class nativeArrayClass;
-    static Constructor nativeArrayConstructor;
-    static Class scriptEngineClass;
-    static Method getGlobalMethod;
+    private static NashornConverter converter = null;
+    private Class nativeArrayClass;
+    private Constructor nativeArrayConstructor;
+    private Class scriptEngineClass;
+    private Method getGlobalMethod;
 
     private static final Logger logger = LoggerFactory.getLogger(NashornConverter.class);
 
-    public static NashornConverter instance() throws Exception {
-        if(converter == null) {
-            converter = new NashornConverter();
+    public NashornConverter() {
+        try {
             nativeArrayClass = Class.forName("jdk.nashorn.internal.objects.NativeArray");
             nativeArrayConstructor = nativeArrayClass.getDeclaredConstructor(ArrayData.class, Global.class);
             nativeArrayConstructor.setAccessible(true);
@@ -44,6 +42,14 @@ public class NashornConverter {
             getGlobalMethod = scriptEngineClass.getDeclaredMethod("getNashornGlobalFrom", ScriptContext.class);
             getGlobalMethod.setAccessible(true);
 
+        } catch (Exception e) {
+            logger.error("Error constructing converter", e);
+        }
+    }
+
+    public static synchronized NashornConverter instance() throws Exception {
+        if(converter == null) {
+            converter = new NashornConverter();
         }
 
         return converter;
