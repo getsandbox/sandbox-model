@@ -21,7 +21,6 @@ public class RuntimeConfig {
     boolean disableLogging = false;
     boolean disableIDs = false;
     boolean enableConcurrency = false;
-    boolean disableRefresh = false;
 
     //route specific configuration
     List<RouteConfig> routes = new ArrayList<>();
@@ -103,8 +102,7 @@ public class RuntimeConfig {
                 if (statePathStr.startsWith("~"))
                     statePathStr = System.getProperty("user.home") + statePathStr.substring(1);
                 this.statePath = Paths.get(statePathStr);
-                //ensure the path actually exists
-                this.statePath.toRealPath();
+
             } catch (Exception e) {
                 throw new IllegalArgumentException("Invalid state path");
             }
@@ -149,14 +147,6 @@ public class RuntimeConfig {
 
     public void setEnableConcurrency(boolean enableConcurrency) {
         this.enableConcurrency = enableConcurrency;
-    }
-
-    public boolean isDisableRefresh() {
-        return disableRefresh;
-    }
-
-    public void setDisableRefresh(boolean disableRefresh) {
-        this.disableRefresh = disableRefresh;
     }
 
     public List<RouteConfig> getRoutes() {
