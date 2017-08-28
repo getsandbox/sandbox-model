@@ -19,7 +19,6 @@ public class RuntimeConfig {
     RuntimeVersion runtimeVersion = RuntimeVersion.getLatest();
     boolean verboseLogging = false;
     boolean disableLogging = false;
-    boolean disableIDs = false;
     boolean enableConcurrency = false;
 
     //route specific configuration
@@ -131,14 +130,6 @@ public class RuntimeConfig {
 
     public void setDisableLogging(boolean disableLogging) {
         this.disableLogging = disableLogging;
-    }
-
-    public boolean isDisableIDs() {
-        return disableIDs;
-    }
-
-    public void setDisableIDs(boolean disableIDs) {
-        this.disableIDs = disableIDs;
     }
 
     public boolean isEnableConcurrency() {

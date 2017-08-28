@@ -1,10 +1,9 @@
 package com.sandbox.runtime.models.http;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sandbox.runtime.models.RuntimeRequest;
 import com.sandbox.runtime.models.EngineRequest;
 import com.sandbox.runtime.models.Route;
-import org.apache.cxf.jaxrs.model.ExactMatchURITemplate;
+import com.sandbox.runtime.models.RuntimeRequest;
 
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
@@ -12,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.cxf.jaxrs.model.ExactMatchURITemplate;
 
 /**
  * Created by nickhoughton on 3/08/2014.
@@ -23,9 +23,6 @@ public class HTTPRoute extends Route {
 
     @JsonIgnore
     ExactMatchURITemplate uriTemplate;
-
-    @JsonIgnore
-    MultivaluedMap<String, String> pathParams;
 
     public HTTPRoute() {
         super();
@@ -72,13 +69,12 @@ public class HTTPRoute extends Route {
         this.path = path;
     }
 
-    public MultivaluedMap<String, String> getPathParams() {
+    public MultivaluedMap<String, String> extractPathParams(String uri) {
+        MultivaluedHashMap pathParams = new MultivaluedHashMap<>();
+        process().match(uri, pathParams);
         return pathParams;
     }
 
-    public void setPathParams(MultivaluedMap<String, String> pathParams) {
-        this.pathParams = pathParams;
-    }
 
     public ExactMatchURITemplate getUriTemplate() {
         return uriTemplate;
@@ -144,12 +140,10 @@ public class HTTPRoute extends Route {
 
     @Override
     public boolean isMatch(RuntimeRequest runtimeRequest) {
-        pathParams = new MultivaluedHashMap<>();
-
         if(runtimeRequest instanceof HttpRuntimeRequest){
             HttpRuntimeRequest httpReq = (HttpRuntimeRequest) runtimeRequest;
 
-            return isMatch(httpReq.getMethod(), httpReq.getUrl(), pathParams, httpReq.getProperties());
+            return isMatch(httpReq.getMethod(), httpReq.getUrl(), httpReq.getProperties());
         }else{
             return false;
         }
@@ -164,14 +158,8 @@ public class HTTPRoute extends Route {
         }
     }
 
-    public boolean isMatch(String method, String url, Map<String, String> properties) {
-        //bit crap but match needs a map to store processed path params.
-        MultivaluedMap<String, String> urlParams = new MultivaluedHashMap<>();
-        return isMatch(method, url, urlParams, properties);
-    }
-
     //matches based on actual url /blah/1 -> /blah/{smth}
-    public boolean isMatch(String method, String url, MultivaluedMap urlParams, Map<String, String> properties){
+    public boolean isMatch(String method, String url, Map<String, String> properties){
         if(method == null || url == null || getMethod() == null || getPath() == null) return false;
 
         //if method isnt right, skip!
@@ -186,7 +174,7 @@ public class HTTPRoute extends Route {
         ExactMatchURITemplate template = process();
 
         //if we have a match, then set it as the best match, because we could match more than one, we want the BEST match.. which i think should be the one with the shortest 'finalMatchGroup'..
-        if(template.match(url, urlParams)) {
+        if(template.match(url)) {
             return true;
         }else{
             return false;

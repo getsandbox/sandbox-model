@@ -19,9 +19,6 @@
 
 package org.apache.cxf.jaxrs.model;
 
-import org.apache.cxf.jaxrs.utils.HttpUtils;
-import org.apache.cxf.jaxrs.utils.JAXRSUtils;
-
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.PathSegment;
@@ -33,6 +30,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import org.apache.cxf.jaxrs.utils.HttpUtils;
+import org.apache.cxf.jaxrs.utils.JAXRSUtils;
 
 public final class ExactMatchURITemplate {
 
@@ -138,6 +137,10 @@ public final class ExactMatchURITemplate {
         return CHARACTERS_TO_ESCAPE.indexOf(ch) != -1;
     }
 
+    public boolean match(String uri) {
+        return match(uri, null);
+    }
+
     public boolean match(String uri, MultivaluedMap<String, String> templateVariableToValue) {
 
         if (uri == null) {
@@ -185,26 +188,29 @@ public final class ExactMatchURITemplate {
         // Assign the matched template values to template variables
         int groupCount = m.groupCount();
 
-        int i = 1;
-        for (String name : variables) {
-            while (i <= groupCount) {
-                String value = m.group(i++);
-                if (value == null || value.length() == 0 && i < groupCount) {
-                    continue;
+        if(templateVariableToValue != null){
+            int i = 1;
+            for (String name : variables) {
+                while (i <= groupCount) {
+                    String value = m.group(i++);
+                    if (value == null || value.length() == 0 && i < groupCount) {
+                        continue;
+                    }
+                    templateVariableToValue.add(name, value);
+                    break;
                 }
-                templateVariableToValue.add(name, value);
-                break;
             }
-        }
-        // The right hand side value, might be used to further resolve
-        // sub-resources.
 
-        String finalGroup = i > groupCount ? SLASH : m.group(groupCount);
-        if (finalGroup == null || finalGroup.startsWith(SLASH_QUOTE)) {
-            finalGroup = SLASH;
-        }
+            // The right hand side value, might be used to further resolve
+            // sub-resources.
 
-        templateVariableToValue.putSingle(FINAL_MATCH_GROUP, finalGroup);
+            String finalGroup = i > groupCount ? SLASH : m.group(groupCount);
+            if (finalGroup == null || finalGroup.startsWith(SLASH_QUOTE)) {
+                finalGroup = SLASH;
+            }
+
+            templateVariableToValue.putSingle(FINAL_MATCH_GROUP, finalGroup);
+        }
 
         return true;
     }
