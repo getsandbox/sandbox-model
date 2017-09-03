@@ -104,7 +104,7 @@ public class JMSResponse extends EngineResponse {
     }
 
     @Override
-    public RuntimeResponse _getRuntimeResponse(EngineRequest req, EngineResponseMessage message, String body) throws Exception {
+    public RuntimeResponse getRuntimeResponse(EngineRequest req, EngineResponseMessage message, String body) throws Exception {
         JMSRuntimeResponse response = new JMSRuntimeResponse(body, message.getHeaders(), message.getResponseDestination());
         response.setResponseDelay(message.getResponseDelay());
         return response;

@@ -132,7 +132,7 @@ public abstract class EngineResponse {
         getActiveMessage().setTemplateLocals(templateLocals);
     }
 
-    public abstract RuntimeResponse _getRuntimeResponse(EngineRequest req, EngineResponseMessage message, String body) throws Exception;
+    public abstract RuntimeResponse getRuntimeResponse(EngineRequest req, EngineResponseMessage message, String body) throws Exception;
 
     protected EngineResponseMessage getActiveMessage(){
         return messages.get(messages.size()-1);
