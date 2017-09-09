@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.cxf.jaxrs.model;
+package org.apache.cxf.custom.jaxrs.model;
 
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MultivaluedMap;
@@ -30,8 +30,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.cxf.jaxrs.utils.HttpUtils;
-import org.apache.cxf.jaxrs.utils.JAXRSUtils;
+import org.apache.cxf.custom.jaxrs.utils.HttpUtils;
+import org.apache.cxf.custom.jaxrs.utils.JAXRSUtils;
 
 public final class ExactMatchURITemplate {
 

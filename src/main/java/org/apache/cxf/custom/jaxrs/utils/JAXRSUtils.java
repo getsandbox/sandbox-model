@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.cxf.jaxrs.utils;
+package org.apache.cxf.custom.jaxrs.utils;
 
 import javax.ws.rs.core.PathSegment;
 import java.util.ArrayList;

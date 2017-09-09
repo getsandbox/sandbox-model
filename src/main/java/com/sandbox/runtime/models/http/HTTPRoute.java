@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.cxf.jaxrs.model.ExactMatchURITemplate;
+import org.apache.cxf.custom.jaxrs.model.ExactMatchURITemplate;
 
 /**
  * Created by nickhoughton on 3/08/2014.
